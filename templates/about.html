@@ -1,0 +1,96 @@
+
+{% extends "base.html" %}
+
+{% block title %}About | OptiCrop{% endblock %}
+
+{% block content %}
+
+<section class="about-hero">
+    <span class="section-tag">OUR VISION</span>
+
+    <h1>Growing a Smarter Future</h1>
+
+    <p>
+        OptiCrop combines artificial intelligence and agriculture
+        to help farmers make informed crop selection decisions
+        using soil nutrients and environmental conditions.
+    </p>
+</section>
+
+<section class="about-content">
+
+    <span class="section-tag">ABOUT THE PROJECT</span>
+
+    <h2>What is OptiCrop?</h2>
+
+    <p>
+        OptiCrop is an AI-powered smart agriculture application
+        developed using Python, Flask and Machine Learning.
+        It uses soil and weather parameters to predict suitable
+        crops through a trained Random Forest classification model.
+    </p>
+
+    <h2>Our Mission</h2>
+
+    <p>
+        Our mission is to demonstrate how data-driven technology
+        can support agricultural decision-making and encourage
+        smarter farming practices.
+    </p>
+
+    <h2>Technology Behind OptiCrop</h2>
+
+    <div class="about-grid">
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i data-lucide="code"></i>
+            </div>
+            <h3>Python & Flask</h3>
+            <p>Backend development and web application management.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i data-lucide="brain"></i>
+            </div>
+            <h3>Machine Learning</h3>
+            <p>Random Forest classification for crop recommendations.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i data-lucide="database"></i>
+            </div>
+            <h3>SQLite Database</h3>
+            <p>Storage of generated crop prediction history.</p>
+        </div>
+
+    </div>
+
+    <h2>How It Works</h2>
+
+    <p>
+        1. Enter soil nutrient values: Nitrogen, Phosphorus and Potassium.
+        <br>
+        2. Provide temperature, humidity, pH and rainfall information.
+        <br>
+        3. The trained AI model analyses the input data.
+        <br>
+        4. OptiCrop displays a predicted crop and model confidence.
+        <br>
+        5. The prediction is stored for dashboard tracking.
+    </p>
+
+    <h2>Our Goal</h2>
+
+    <p>
+        To showcase the potential of AI in agriculture through
+        an easy-to-use, informative and modern digital platform.
+        Predictions should be treated as decision-support suggestions
+        and verified with local agricultural expertise.
+    </p>
+
+</section>
+
+{% endblock %}

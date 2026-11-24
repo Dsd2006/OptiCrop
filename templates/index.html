@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}OptiCrop | Smart Agriculture{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="eyebrow">
+            <i data-lucide="sparkles"></i>
+            INTELLIGENT AGRICULTURE PLATFORM
+        </div>
+
+        <h1>Grow Smarter.<br>
+            <span>Harvest Better.</span>
+        </h1>
+
+        <p class="hero-description">
+            Discover the power of artificial intelligence.
+            Get smart crop recommendations using soil nutrients
+            and weather conditions.
+        </p>
+
+        <div class="hero-actions">
+            <a href="{{ url_for('recommend') }}" class="btn-primary">
+                Explore AI Recommendations
+                <i data-lucide="arrow-right"></i>
+            </a>
+
+            <a href="{{ url_for('dashboard') }}" class="btn-secondary">
+                View Dashboard
+            </a>
+        </div>
+
+        <div class="hero-trust">
+            <div class="trust-item">
+                <i data-lucide="brain"></i>
+                <span>AI Powered</span>
+            </div>
+            <div class="trust-item">
+                <i data-lucide="leaf"></i>
+                <span>Smart Farming</span>
+            </div>
+            <div class="trust-item">
+                <i data-lucide="activity"></i>
+                <span>Data Driven</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-visual">
+        <div class="hero-image">
+            <div class="image-overlay"></div>
+
+            <div class="floating-card floating-top">
+                <i data-lucide="sprout"></i>
+                <div>
+                    <strong>Smart Farming</strong>
+                    <small>Powered by AI</small>
+                </div>
+            </div>
+
+            <div class="floating-card floating-bottom">
+                <span class="live-dot"></span>
+                <div>
+                    <strong>AI Crop Analysis</strong>
+                    <small>Ready to recommend</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="section-heading">
+        <span class="section-tag">WHAT WE OFFER</span>
+        <h2>Technology Meets Agriculture</h2>
+        <p>Everything you need to make smarter farming decisions.</p>
+    </div>
+
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon"><i data-lucide="brain"></i></div>
+            <h3>AI Crop Prediction</h3>
+            <p>Machine learning analyzes soil and climate data to recommend suitable crops.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon"><i data-lucide="chart-no-axes-combined"></i></div>
+            <h3>Smart Analytics</h3>
+            <p>Track crop recommendations and understand your farming data.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon"><i data-lucide="database"></i></div>
+            <h3>Prediction History</h3>
+            <p>Keep your previous crop recommendations organized in one place.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div>
+        <span class="section-tag">START YOUR JOURNEY</span>
+        <h2>Make Every Harvest Smarter.</h2>
+        <p>Let AI help you make informed crop selection decisions.</p>
+    </div>
+
+    <a href="{{ url_for('recommend') }}" class="btn-primary">
+        Try OptiCrop <i data-lucide="arrow-right"></i>
+    </a>
+</section>
+
+{% endblock %}

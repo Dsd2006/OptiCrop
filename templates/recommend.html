@@ -1,0 +1,189 @@
+
+{% extends "base.html" %}
+
+{% block title %}AI Recommendation | OptiCrop{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+    <div>
+        <span class="section-tag">INTELLIGENT CROP SELECTION</span>
+        <h1>AI Crop Recommendation</h1>
+        <p>Enter your soil and environmental conditions to discover a suitable crop.</p>
+    </div>
+    <div class="ai-status">
+        <span class="live-dot"></span> AI MODEL ACTIVE
+    </div>
+</section>
+
+<section class="recommend-layout">
+
+    <div class="panel form-panel">
+
+        <div class="panel-heading">
+            <div>
+                <h3>Farm Information</h3>
+                <p>Provide accurate soil and weather measurements.</p>
+            </div>
+            <i data-lucide="sliders-horizontal"></i>
+        </div>
+
+        <form method="POST" action="{{ url_for('recommend') }}" id="cropForm">
+
+            <div class="form-section">
+                <h4><i data-lucide="flask-conical"></i> Soil Nutrients</h4>
+
+                <div class="input-grid">
+                    <div class="form-group">
+                        <label for="nitrogen">Nitrogen (N)</label>
+                        <input type="number" step="any" min="0" max="200" id="nitrogen" name="nitrogen" placeholder="Example: 90" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phosphorus">Phosphorus (P)</label>
+                        <input type="number" step="any" min="0" max="200" id="phosphorus" name="phosphorus" placeholder="Example: 42" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="potassium">Potassium (K)</label>
+                        <input type="number" step="any" min="0" max="200" id="potassium" name="potassium" placeholder="Example: 43" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ph">Soil pH</label>
+                        <input type="number" step="any" min="0" max="14" id="ph" name="ph" placeholder="Example: 6.5" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h4><i data-lucide="cloud-sun"></i> Weather Conditions</h4>
+
+                <div class="input-grid">
+                    <div class="form-group">
+                        <label for="temperature">Temperature (°C)</label>
+                        <input type="number" step="any" id="temperature" name="temperature" placeholder="Example: 25" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="humidity">Humidity (%)</label>
+                        <input type="number" step="any" min="0" max="100" id="humidity" name="humidity" placeholder="Example: 80" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="rainfall">Rainfall (mm)</label>
+                        <input type="number" step="any" min="0" id="rainfall" name="rainfall" placeholder="Example: 200" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-note">
+                <i data-lucide="info"></i>
+                <span>Enter soil-test and local weather measurements for a more meaningful prediction.</span>
+            </div>
+
+            <div class="form-actions">
+                <button type="reset" class="btn-secondary">
+                    <i data-lucide="rotate-ccw"></i> Clear
+                </button>
+
+                <button type="submit" class="btn-primary" id="predictButton">
+                    <i data-lucide="sparkles"></i>
+                    Predict Suitable Crop
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="result-column">
+
+        {% if result %}
+
+        <div class="panel result-card">
+            <div class="result-success-icon">
+                <i data-lucide="sprout"></i>
+            </div>
+
+            <span class="section-tag">AI RECOMMENDATION</span>
+
+            <h2>{{ result.crop }}</h2>
+
+            <p class="result-description">
+                {{ result.message }}
+            </p>
+
+            <div class="confidence-section">
+                <div class="confidence-header">
+                    <span>Model Confidence</span>
+                    <strong>{{ result.confidence }}%</strong>
+                </div>
+
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: {{ result.confidence }}%"></div>
+                </div>
+            </div>
+
+            <div class="result-footer">
+                <i data-lucide="check-circle"></i>
+                Prediction saved successfully.
+            </div>
+        </div>
+
+        {% else %}
+
+        <div class="panel empty-result">
+            <div class="empty-result-icon">
+                <i data-lucide="leaf"></i>
+            </div>
+
+            <h3>Your Crop Recommendation</h3>
+
+            <p>
+                Your AI-generated crop recommendation will appear here
+                after you submit the farm information.
+            </p>
+
+            <div class="result-feature">
+                <i data-lucide="brain"></i>
+                <span>Machine Learning Analysis</span>
+            </div>
+
+            <div class="result-feature">
+                <i data-lucide="activity"></i>
+                <span>Soil & Weather Evaluation</span>
+            </div>
+
+            <div class="result-feature">
+                <i data-lucide="sprout"></i>
+                <span>Crop Selection Support</span>
+            </div>
+        </div>
+
+        {% endif %}
+
+        <div class="tip-card">
+            <i data-lucide="lightbulb"></i>
+            <div>
+                <strong>Smart Farming Tip</strong>
+                <p>Use recent soil-test results and reliable local weather data. AI recommendations are decision-support suggestions, not guarantees.</p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const cropForm = document.getElementById("cropForm");
+    const predictButton = document.getElementById("predictButton");
+
+    cropForm.addEventListener("submit", function() {
+        predictButton.disabled = true;
+        predictButton.innerHTML = "Analyzing...";
+    });
+</script>
+{% endblock %}

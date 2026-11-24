@@ -1,0 +1,204 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard | OptiCrop{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+    <div>
+        <span class="section-tag">OVERVIEW</span>
+        <h1>Analytics Dashboard</h1>
+        <p>Monitor your AI crop recommendations and farming insights.</p>
+    </div>
+
+    <a href="{{ url_for('recommend') }}" class="btn-primary">
+        <i data-lucide="plus"></i> New Prediction
+    </a>
+</section>
+
+<section class="stats-grid">
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <span>Total Predictions</span>
+            <i data-lucide="activity"></i>
+        </div>
+        <h2>{{ stats.total_predictions }}</h2>
+        <p>AI predictions generated</p>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <span>Crop Varieties</span>
+            <i data-lucide="sprout"></i>
+        </div>
+        <h2>{{ stats.different_crops }}</h2>
+        <p>Unique crops recommended</p>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <span>Latest Crop</span>
+            <i data-lucide="leaf"></i>
+        </div>
+        <h2 class="stat-crop">
+            {% if stats.latest_prediction %}
+                {{ stats.latest_prediction['recommended_crop'] }}
+            {% else %}
+                --
+            {% endif %}
+        </h2>
+        <p>Most recent recommendation</p>
+    </div>
+
+</section>
+
+<section class="dashboard-grid">
+
+    <div class="panel chart-panel">
+        <div class="panel-heading">
+            <div>
+                <h3>Prediction Confidence</h3>
+                <p>AI model confidence across recent predictions</p>
+            </div>
+            <i data-lucide="chart-line"></i>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="confidenceChart"></canvas>
+        </div>
+    </div>
+
+    <div class="panel insight-panel">
+        <div class="panel-heading">
+            <div>
+                <h3>Smart Farming Insights</h3>
+                <p>Your activity overview</p>
+            </div>
+            <i data-lucide="lightbulb"></i>
+        </div>
+
+        <div class="insight-item">
+            <span class="insight-icon"><i data-lucide="brain"></i></span>
+            <div>
+                <strong>AI Powered Analysis</strong>
+                <p>Recommendations are generated using machine learning.</p>
+            </div>
+        </div>
+
+        <div class="insight-item">
+            <span class="insight-icon"><i data-lucide="database"></i></span>
+            <div>
+                <strong>Prediction Tracking</strong>
+                <p>{{ stats.total_predictions }} predictions stored in your database.</p>
+            </div>
+        </div>
+
+        <div class="insight-item">
+            <span class="insight-icon"><i data-lucide="sprout"></i></span>
+            <div>
+                <strong>Crop Diversity</strong>
+                <p>{{ stats.different_crops }} different crop varieties identified.</p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="panel history-panel">
+    <div class="panel-heading">
+        <div>
+            <h3>Recent Predictions</h3>
+            <p>Your latest AI-generated crop recommendations</p>
+        </div>
+        <span class="table-badge">{{ history|length }} Records</span>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Recommended Crop</th>
+                    <th>Confidence</th>
+                    <th>Temperature</th>
+                    <th>Humidity</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in history %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>
+                        <span class="crop-name">
+                            <i data-lucide="sprout"></i>
+                            {{ item['recommended_crop'] }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="confidence-badge">
+                            {{ "%.1f"|format(item['confidence']) }}%
+                        </span>
+                    </td>
+                    <td>{{ item['temperature'] }}°C</td>
+                    <td>{{ item['humidity'] }}%</td>
+                    <td>{{ item['created_at'] }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        No predictions yet. Start by generating your first crop recommendation.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const historyLabels = {{ history|map(attribute='recommended_crop')|list|reverse|list|tojson }};
+    const confidenceValues = {{ history|map(attribute='confidence')|list|reverse|list|tojson }};
+
+    const chartCanvas = document.getElementById("confidenceChart");
+
+    if (chartCanvas && historyLabels.length > 0) {
+        new Chart(chartCanvas, {
+            type: "line",
+            data: {
+                labels: historyLabels,
+                datasets: [{
+                    label: "AI Confidence (%)",
+                    data: confidenceValues,
+                    borderColor: "#26734d",
+                    backgroundColor: "rgba(38,115,77,0.12)",
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: "#26734d"
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: "Confidence (%)"
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}
